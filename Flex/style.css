@@ -1,0 +1,82 @@
+/*box-sizing doesn't get inherit to all elements in body, so i declare box-sizing again in '.fake', 
+we can also use * instead of body*/
+
+body {
+    box-sizing: border-box;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+}
+
+.on-top {
+    color: black;
+    background-color: yellow;
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+    padding: 10px 20px;
+}
+
+.head {
+    color: white;
+    background-color: #1abc9c;
+    text-align:center;
+    padding:30px;
+}
+
+.navigation {
+    display: flex;
+    background-color: black;
+
+}
+
+.navigation a {
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    padding: 20px;
+}
+
+.navigation a:hover{
+    background-color: white;
+    color: black;
+}
+
+.maint {
+    display:flex;
+    flex-wrap: wrap;
+}
+
+
+.sidebar {
+    background-color: #f1f1f1;
+    color: black;
+    flex:30%;
+    padding: 20px;
+}
+
+.mainpage {
+    flex:60%;
+    background-color: white;
+    padding: 20px;
+}
+
+.fake {
+  box-sizing: border-box;
+  background-color: #aaa;
+  width: 100%;
+  height: 60px;
+  padding: 20px;
+}
+
+footer {
+    text-align: center;
+    background: #ddd;
+    padding: 20px;
+  
+}
+
+@media screen and (max-width: 700px) {
+  .maint, .navigation {   
+    flex-direction: column;
+  }
+}
