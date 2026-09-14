@@ -350,13 +350,13 @@ BACKGROUND IMAGE
 
 * One-dimensional layout system means flexbox primarily arranges along one axis at a time.
 
-*  ```css 
-    <div class="container">
-    <div>A</div>
-    <div>B</div>
-    <div>C</div>
-    </div>
-  ```
+```css 
+<div class="container">
+<div>A</div>
+<div>B</div>
+<div>C</div>
+</div>
+```
   * .container becomes **flex container**
   * It's chidren A,B,C becomes **flex items**
 
@@ -404,4 +404,1416 @@ flex-wrap
 * flex-basis - specifies the intial lenght of a flex item.
 
 * flow is shorthnd property for above three
+
+
+# Grid Box
+
+* Grid is a 2 dimensional layout system used to arrange elements across both rows and columns.
+
+* Here, we explicitly working with rows, columns and their intersection
+
+*  Creating columns: 
+```css
+display: grid;
+grid-tempelate-columns: 200px 200px 200px;
+```
+
+* here, we create 3 columns, each 200px wide
+
+* 1fr = fraction of the available space, 3equal portions.
+
+* `repeat()` 
+
+```css
+grid-template-columns: 1fr 1fr 1fr;
+```
+instead we write
+`grid-template-columns: repeat(3, 1fr);`
+
+* just like flex grids also support `gap:20px`
+
+* To control rows we can use: ` grid-template-rows: 100px 200px;`
+
+* so, it is called 2D layout system.
+
+* **Grid lines** if we create 2 cols we have 3 vertical grid lines
+
+* `grid-column: 1/-1`  the element will span over first line to last line.
+
+## Where to use flex and Grid
+
+* use **flex** when we care about how items are arranged along one axis.
+
+* Use **grid** when the relationship between rows and columns matters.
+
+
+
+# Positioning
+
+* Used to controls where an element is placed and how it behaves relative to other elements or the viewport.
+
+* CSS `position` property has:
+
+  * `static`
+  * `relative`
+  * `absolute`
+  * `fixed`
+  * `sticky`
+
+* Normal flow -> move an element -> remove it from flow -> attach it to viewport -> stick during scrolling
+
+## **static** - stay in normal flow
+
+* Default position of every element.
+
+```css
+.box {
+    position: static;
+}
+```
+
+* Element follows the normal document flow.
+
+* `top`, `right`, `bottom`, `left` and `z-index` do not affect a static element.
+
+## **relative** - stay in flow, but allow movement
+
+* Element remains in the normal document flow.
+
+```css
+.box {
+    position: relative;
+    top: 20px;
+    left: 10px;
+}
+```
+
+* The element moves from its normal position.
+
+* The original space of the element is still maintained.
+
+* Important use of `relative` is to create a positioning reference for an absolutely positioned child.
+
+```css
+.parent {
+    position: relative;
+}
+
+.child {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+```
+
+* Here `.child` is positioned relative to `.parent`.
+
+## **absolute**
+
+* Element is removed from the normal document flow.
+
+```css
+.child {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+```
+
+* It is positioned using `top`, `right`, `bottom`, and `left`.
+
+* An absolutely positioned element is positioned relative to its nearest positioned ancestor.
+
+* If there is no positioned ancestor, it is generally positioned relative to the initial containing block.
+
+* Common use:
+
+  * badge on image
+  * close button
+  * icon inside input
+  * overlay
+
+
+## **fixed** - attached to viewport
+
+* Element is positioned relative to the viewport.
+
+```css
+.button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+```
+
+* It stays in the same place even when the page is scrolled.
+
+* Common use:
+
+  * floating buttons
+  * chat buttons
+  * fixed navigation
+  * back-to-top buttons
+
+
+## **sticky**
+
+* It behaves like a normal element until a scrolling position is reached.
+
+```css
+.header {
+    position: sticky;
+    top: 0;
+}
+```
+
+* When the page is scrolled and the element reaches `top: 0`, it sticks to that position.
+
+* It can move again depending on its containing area and scrolling context.
+
+* Common use:
+
+  * sticky header
+  * sticky sidebar
+  * table headings
+
+
+```text
+
+static    → normal position
+
+relative  → normal position + can move
+
+absolute  → removed from normal flow + positioned relative to ancestor
+
+fixed     → attached to viewport
+
+sticky    → normal position + sticks while scrolling
+```
+
+# Z-Index & Stacking Contexts
+
+* `z-index` controls the stacking order of overlapping elements.
+
+* It works along the Z-axis, which means which element appears in front of another.
+
+```css
+.box1 {
+    position: relative;
+    z-index: 1;
+}
+
+.box2 {
+    position: relative;
+    z-index: 2;
+}
+```
+
+* `.box2` appears above `.box1` when they overlap.
+
+* Higher `z-index` normally means the element appears above a lower `z-index` within the same stacking context.
+
+* `z-index` does not mean "always appear above everything".
+
+* Parent stacking contexts can limit how children are layered.
+
+## **Stacking Context**
+
+* A stacking context is an independent layering environment.
+
+* Some CSS properties can create a new stacking context.
+
+* Examples include:
+
+  * positioned elements with a `z-index` value other than `auto`
+  * `position: fixed`
+  * `opacity` less than `1`
+  * `transform` other than `none`
+
+* Because of stacking contexts, a child with a very high `z-index` cannot necessarily appear above an element belonging to another higher stacking context.
+
+
+# Responsive Design
+
+* Responsive design means making a website adapt to different screen sizes.
+
+* The same website should work properly on:
+
+  * mobile
+  * tablet
+  * laptop
+  * desktop
+
+* Main goal is not to create separate websites for each device, but to make the layout adapt.
+
+# Media Queries
+
+* Media queries allow CSS rules to be applied only when a condition is true.
+
+* If the  SCREEN/DEVICE matches this condition, apply these styles.
+
+```css
+@media (max-width: 600px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+    .menu {
+        flex-direction: row;
+    }
+}
+```
+
+* Here the CSS inside the media query applies when the viewport width is `700px` or less.
+
+* Common conditions:
+
+  * `max-width`
+  * `min-width`
+  * `orientation`
+
+## **max-width**
+
+```css
+@media screen and (max-width: 700px) {
+    body {
+        font-size: 14px;
+    }
+}
+```
+
+* Applies when screen width is 700px or smaller.
+
+## **min-width**
+
+```css
+@media screen and (min-width: 1000px) {
+    body {
+        font-size: 18px;
+    }
+}
+```
+
+* Applies when screen width is 1000px or larger.
+
+## **orientation**
+
+```css
+@media (orientation: landscape) {
+    body {
+        background-color: lightgray;
+    }
+}
+```
+
+* Applies when the viewport is wider than it is tall.
+
+**breakpoint**
+
+* A breakpoint should be chosen based on when your layout starts becoming uncomfortable or broken.
+
+
+# Fluid Layouts
+
+* Fluid layout means designing elements so they can adapt to the available space instead of depending only on fixed dimensions.
+
+* **main idea** : Instead of giving elements a fixed size, allow them to grow and shrink according to the available space, while setting sensible limits.
+
+* prevents overflow of layout in differnet screens.
+
+
+* Fixed:
+
+```css
+.container {
+    width: 1000px;
+}
+```
+
+* This can create problems on a screen smaller than 1000px.
+
+* Instead, we can use relative sizes and constraints.
+
+## %
+
+* using % will make the element size depends on it's parent.
+
+## **max-width**
+
+```css
+.container {
+    width: 100%;
+    max-width: 700px;
+}
+```
+
+* `width: 100%` allows the container to use available space.
+
+* `max-width` prevents it from becoming too wide.
+
+
+## **min-height**
+
+```css
+.container {
+    min-height: 300px;
+}
+```
+
+* Element should not become shorter than the specified value.
+
+
+## **clamp()**
+
+* `clamp()` allows a value to have a minimum, preferred and maximum value.
+
+```css
+h1 {
+    font-size: clamp(24px, 5vw, 60px);
+}
+```
+
+* Syntax:
+
+```css
+clamp(minimum, preferred, maximum)
+```
+
+* The value can grow with the viewport but cannot become smaller than the minimum or larger than the maximum.
+
+
+## **min()**
+
+* `min()` selects the smaller value.
+
+```css
+.container {
+    width: min(90%, 1200px);
+}
+```
+
+* This means the width will be whichever is smaller:
+
+  * `90%`
+  * `1200px`
+
+
+## **max()**
+
+* `max()` selects the larger value.
+
+```css
+.container {
+    width: max(300px, 50%);
+}
+```
+
+* The width will be whichever is larger:
+
+  * `300px`
+  * `50%`
+
+
+## Fluid + Grid Pattern
+```css
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+```
+
+* here, the grid should be least 200px wide. If there is more space, it can take it.
+
+
+# Transitions
+
+* Transition creates a smooth change between two CSS states.
+
+* Without transition, a property changes immediately.
+
+```css
+.button:hover {
+    background-color: black;
+}
+```
+
+* We can make the change smooth using:
+
+```css
+.button {
+    transition: background-color 0.3s;
+}
+```
+
+* Common transition properties:
+
+  * `transition-property`
+  * `transition-duration`
+  * `transition-timing-function`
+  * `transition-delay`
+
+* Shorthand:
+
+```css
+.button {
+    transition: background-color 0.3s ease;
+}
+```
+
+* Example:
+
+```css
+.button {
+    background-color: blue;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: black;
+}
+```
+
+* The button smoothly changes from blue to black.
+
+
+# Animations
+
+* CSS animations are used when an element needs to go through multiple stages of change.
+
+* Transition - when the user hovers, smoothly changes from A -> B
+
+* Animation - Run this sequence of changes automatically
+
+* `@keyframes` defines the stages of the animation.
+
+```css
+@keyframes move {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(100px);
+    }
+}
+```
+
+* Apply the animation:
+
+```css
+.box {
+    animation: move 2s;
+}
+```
+
+* Here:
+
+  * `move` → animation name
+  * `2s` → animation duration
+
+* Unlike a simple transition, an animation can contain multiple stages.
+
+```css
+@keyframes example {
+    0% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(100px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+```
+
+* `animation: spin 1s linear infinite;`
+
+* animation:
+    spin       → animation name
+    1s         → duration
+    linear     → timing function
+    infinite   → iteration count
+
+# Transforms
+
+* `transform` changes the visual position, size or shape of an element without changing the normal document flow in the same way as layout properties.
+
+* Common transform functions:
+
+  * `translate()`
+  * `rotate()`
+  * `scale()`
+  * `skew()`
+
+## **translate**
+
+* Moves an element.
+
+```css
+.box {
+    transform: translate(20px, 10px);
+}
+```
+
+* First value → horizontal movement.
+* Second value → vertical movement.
+
+
+## **rotate**
+
+* Rotates an element.
+
+```css
+.box {
+    transform: rotate(45deg);
+}
+```
+
+
+## **scale**
+
+* Increases or decreases the size visually.
+
+```css
+.box {
+    transform: scale(1.2);
+}
+```
+
+* `1` → original size
+* `1.2` → 120% of original size
+* `0.8` → 80% of original size
+
+
+## **skew**
+
+* Slants an element.
+
+```css
+.box {
+    transform: skew(20deg);
+}
+```
+
+
+## **2D and 3D transforms**
+
+* 2D transforms work on horizontal and vertical dimensions.
+
+* 3D transforms can also work with the Z-axis.
+
+```css
+.box {
+    transform: rotateX(45deg);
+}
+```
+
+## **transform-origin**
+
+* Transformations generally happen around the center of the element 
+
+* we can change that `transform-origin: top left;`.
+
+
+*Note* : `transform` visually transforms an element after normal layout, without changing the space allocated to it in normal document flow.
+
+
+# CSS Custom Properties (Variables)
+
+* CSS custom properties are reusable values stored in CSS.
+
+* **One sourceof truth -> many usages**
+
+```css
+:root {
+    --main-color: #333;
+    --spacing: 20px;
+}
+```
+
+* Use the variable with `var()`.
+
+```css
+.header {
+    background-color: var(--main-color);
+    padding: var(--spacing);
+}
+```
+
+* Main benefit is **reusability**.
+
+* If the value needs to change, we can change it in one place.
+
+```css
+:root {
+    --main-color: #333;
+}
+```
+
+* Why **root** means, it refers to <html> so variables declared there are generally available throughout the page.
+
+* **var()** means retrieve the variables's value.
+
+* Not only for color, "reusable named value".
+
+* CSS custom properties are inherited by default.
+
+* Instead of writing the same color many times:
+
+```css
+color: #333;
+background-color: #333;
+border-color: #333;
+```
+
+* We can use:
+
+```css
+color: var(--main-color);
+background-color: var(--main-color);
+border-color: var(--main-color);
+```
+
+* Variables can also be scoped to a particular element.
+
+```css
+.card {
+    --card-color: blue;
+    color: var(--card-color);
+}
+```
+
+
+# Pseudo-Classes
+
+* Pseudo-classes select an element based on its state or position.
+
+* Syntax:
+
+```css
+selector:pseudo-class
+```
+
+## **:hover**
+
+* Applies when the mouse is over an element.
+
+```css
+a:hover {
+    color: red;
+}
+```
+
+## **:focus**
+
+* Applies when an element receives focus.
+
+```css
+input:focus {
+    border-color: blue;
+}
+```
+
+* Commonly used for form inputs.
+
+## **:nth-child()**
+
+* Selects an element based on its position among its siblings.
+
+```css
+li:nth-child(2) {
+    color: red;
+}
+```
+
+* This selects the second `li` that matches the structural condition.
+
+## **Other common pseudo-classes**
+
+```css
+:first-child
+:last-child
+:checked
+:disabled
+:not()
+```
+
+* Pseudo-classes do not create new HTML elements.
+* They allow us to target an existing element based on its state or position.
+
+
+# Pseudo-Elements
+
+* Pseudo-elements allow us to style a specific part of an element or create a generated cosmetic piece.
+
+* Syntax:
+
+```css
+selector::pseudo-element
+```
+
+## **::before**
+
+```css
+.title::before {
+    content: "★ ";
+}
+```
+
+* Adds generated content before the element's content.
+
+## **::after**
+
+```css
+.title::after {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 2px;
+    background-color: black;
+}
+```
+
+* Adds generated content after the element's content.
+
+* `::before` and `::after` commonly require the `content` property.
+
+## **Other common pseudo-elements**
+
+```css
+::first-letter
+::first-line
+::selection
+```
+
+* Pseudo-elements are mainly useful for visual/cosmetic effects without adding extra HTML elements.
+
+---
+
+# Pseudo-Class vs Pseudo-Element
+
+* **Pseudo-class** → selects an element based on its state or position.
+
+```css
+button:hover
+li:nth-child(2)
+input:focus
+```
+
+* **Pseudo-element** → targets a part of an element or creates generated content.
+
+```css
+p::first-letter
+.title::before
+.title::after
+```
+
+
+# CSS Architecture
+
+* As a project becomes larger, CSS can become difficult to maintain.
+
+* Problems can happen when:
+
+  * class names are unclear
+  * styles affect unintended elements
+  * the same styles are repeated
+  * changing one component breaks another component
+
+* CSS architecture means organizing CSS so that it is:
+
+  * reusable
+  * predictable
+  * maintainable
+  * easier to understand
+
+# BEM
+
+* BEM stands for:
+
+```text
+Block
+Element
+Modifier
+```
+
+* It is a naming methodology used to organize CSS classes.
+
+## **Block**
+
+* A block is an independent component.
+
+```html
+<div class="card">
+</div>
+```
+
+```css
+.card {
+    padding: 20px;
+}
+```
+
+* `card` is the block.
+
+---
+
+## **Element**
+
+* An element is a part of a block.
+
+```html
+<div class="card">
+    <h2 class="card__title">Laptop</h2>
+    <p class="card__description">Good laptop</p>
+</div>
+```
+
+* Naming pattern:
+
+```text
+block__element
+```
+
+Examples:
+
+```text
+card__title
+card__description
+card__button
+```
+
+
+## **Modifier**
+
+* A modifier represents a different state or variation of a block or element.
+
+```html
+<div class="card card--featured">
+</div>
+```
+
+* Naming pattern:
+
+```text
+block--modifier
+```
+
+Examples:
+
+```text
+card--featured
+button--large
+button--disabled
+```
+
+* The original block can still be used together with the modifier.
+
+```css
+.card {
+    padding: 20px;
+}
+
+.card--featured {
+    border: 2px solid blue;
+}
+```
+
+* Here:
+
+```text
+card
+↓
+base component
+
+card--featured
+↓
+variation of the component
+```
+
+# BEM Naming Example
+
+```html
+<div class="product-card product-card--featured">
+
+    <h2 class="product-card__title">
+        Laptop
+    </h2>
+
+    <p class="product-card__price">
+        ₹50,000
+    </p>
+
+    <button class="product-card__button">
+        Buy Now
+    </button>
+
+</div>
+```
+
+* `product-card` → Block
+
+* `product-card__title` → Element
+
+* `product-card__price` → Element
+
+* `product-card__button` → Element
+
+* `product-card--featured` → Modifier
+
+* BEM helps prevent unclear class relationships and makes CSS easier to maintain as the project grows.
+
+# Preprocessors & Frameworks
+
+CSS preprocessors and frameworks help us to write and manage CSS more easily, especially in large projects.
+
+Examples:
+
+- **Sass** → CSS Preprocessor
+- **Tailwind CSS** → Utility-first CSS Framework
+
+---
+
+# 1. CSS Preprocessor
+
+A CSS preprocessor allows us to write CSS with some extra features.
+
+It converts the code into normal CSS before the browser uses it.
+
+```text
+Sass / SCSS
+    ↓
+Compiler
+    ↓
+CSS
+    ↓
+Browser
+```
+
+Browser does not directly understand Sass.
+
+---
+
+# 2. Why use CSS Preprocessors?
+
+Normal CSS is enough for small projects.
+
+In large projects we may have:
+
+- Many CSS rules
+- Repeated values
+- Large stylesheets
+- Many components
+- Difficult maintenance
+
+A preprocessor gives features which help us organize and reuse CSS.
+
+---
+
+# 3. Sass
+
+**Sass** means **Syntactically Awesome Style Sheets**.
+
+Sass is a CSS preprocessor which provides features like:
+
+- Variables
+- Nesting
+- Mixins
+- Functions
+- Modules
+
+Sass commonly uses `.scss` files.
+
+---
+
+# 4. Sass Variables
+
+Variables are used to store values and reuse them.
+
+```scss
+$primary-color: blue;
+$border-radius: 8px;
+
+.button {
+    background-color: $primary-color;
+    border-radius: $border-radius;
+}
+
+.card {
+    border-radius: $border-radius;
+}
+```
+
+Instead of writing the same value many times, we can store it once and reuse it.
+
+---
+
+# 5. Sass Nesting
+
+Sass allows us to write selectors inside another selector.
+
+```scss
+.navbar {
+    background-color: black;
+
+    a {
+        color: white;
+
+        &:hover {
+            color: yellow;
+        }
+    }
+}
+```
+
+It helps us keep related styles together.
+
+But too much/deep nesting can make CSS difficult to maintain.
+
+---
+
+# 6. Sass Mixins
+
+A mixin is a reusable group of CSS declarations.
+
+```scss
+@mixin center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    @include center;
+}
+
+.card {
+    @include center;
+}
+```
+
+Mixins help to avoid repeating the same CSS.
+
+---
+
+# 7. Sass Functions
+
+Sass can be used for calculations and reusable operations.
+
+```scss
+$base-size: 16px;
+
+.title {
+    font-size: $base-size * 2;
+}
+```
+
+Compiled CSS:
+
+```css
+.title {
+    font-size: 32px;
+}
+```
+
+---
+
+# 8. Sass Files and Modules
+
+Large projects can divide styles into multiple files.
+
+```text
+styles/
+├── _variables.scss
+├── _buttons.scss
+├── _navbar.scss
+└── main.scss
+```
+
+Modern Sass uses `@use` to use modules.
+
+```scss
+@use "variables";
+@use "buttons";
+```
+
+This helps organize large CSS projects.
+
+---
+
+# 9. Sass vs CSS Variables
+
+Sass variable:
+
+```scss
+$primary-color: blue;
+```
+
+CSS custom property:
+
+```css
+:root {
+    --primary-color: blue;
+}
+```
+
+Main difference:
+
+```text
+Sass variable
+→ Used during compilation/build time
+
+CSS variable
+→ Exists in browser at runtime
+```
+
+CSS variables can also be changed dynamically.
+
+---
+
+# 10. CSS Framework
+
+A CSS framework provides ready-made styles, utilities or components which help us build UI faster.
+
+Examples:
+
+- Bootstrap
+- Tailwind CSS
+- Bulma
+
+Instead of creating every style from scratch, we can use the framework's utilities or components.
+
+---
+
+# 11. Tailwind CSS
+
+Tailwind CSS is a **utility-first CSS framework**.
+
+It provides small utility classes for styling.
+
+```html
+<button class="bg-blue-500 text-white px-4 py-2 rounded">
+    Submit
+</button>
+```
+
+Conceptually:
+
+```text
+bg-blue-500 → background color
+text-white  → text color
+px-4        → horizontal padding
+py-2        → vertical padding
+rounded     → border radius
+```
+
+We combine these utilities to create the required UI.
+
+---
+
+# 12. Why Utility-first?
+
+A utility class performs a small styling job.
+
+For example:
+
+```text
+flex
+→ display: flex
+
+text-center
+→ text-align: center
+
+font-bold
+→ font-weight: 700
+```
+
+So instead of creating a custom CSS class for every component, we can combine utility classes.
+
+---
+
+# 13. Tailwind Responsive Design
+
+Tailwind provides responsive variants.
+
+```html
+<div class="text-sm md:text-lg">
+    Hello
+</div>
+```
+
+```text
+Small screen
+→ text-sm
+
+Medium screen and above
+→ md:text-lg
+```
+
+Example:
+
+```html
+<div class="flex flex-col md:flex-row">
+```
+
+Default:
+
+```text
+flex-direction: column
+```
+
+Medium screen and above:
+
+```text
+flex-direction: row
+```
+
+---
+
+# 14. Tailwind States
+
+Tailwind also provides state variants.
+
+```html
+<button class="bg-blue-500 hover:bg-blue-700">
+    Submit
+</button>
+```
+
+`hover:` applies the style when the element is hovered.
+
+Other examples:
+
+```text
+hover:
+focus:
+active:
+disabled:
+```
+
+---
+
+# 15. Tailwind and CSS
+
+Tailwind does not mean we don't need to understand CSS.
+
+For example:
+
+```html
+<div class="flex items-center justify-between">
+```
+
+This represents CSS concepts such as:
+
+```css
+display: flex;
+align-items: center;
+justify-content: space-between;
+```
+
+So understanding CSS fundamentals is important before using Tailwind.
+
+---
+
+# 16. Sass vs Tailwind CSS
+
+| Sass | Tailwind CSS |
+|---|---|
+| CSS Preprocessor | CSS Framework |
+| Extends CSS | Provides utility classes |
+| Uses SCSS/Sass files | Mainly uses utility classes |
+| Variables, nesting, mixins | Responsive/state utilities |
+| Helps organize CSS | Helps build UI faster |
+
+### Simple difference
+
+```text
+Sass
+↓
+Helps us write and organize CSS better
+
+Tailwind
+↓
+Helps us build UI faster using utility classes
+```
+
+---
+
+# 17. What happens behind the scenes?
+
+### Sass
+
+```text
+SCSS
+ ↓
+Sass Compiler
+ ↓
+CSS
+ ↓
+Browser
+```
+
+### Tailwind
+
+```text
+HTML / Templates
+ ↓
+Tailwind build process
+ ↓
+Generate CSS
+ ↓
+Browser
+```
+
+In the end, the browser uses CSS.
+
+---
+
+# 18. When to use?
+
+### Sass
+
+Useful when:
+
+- Project has a lot of custom CSS
+- We need reusable CSS logic
+- We want to organize CSS into multiple files
+- Team already uses Sass
+
+### Tailwind
+
+Useful when:
+
+- We want to build UI quickly
+- We prefer utility-first styling
+- We need responsive utilities
+- We work with component-based frameworks like Vue or React
+
+For small projects, normal CSS may be enough.
+
+---
+
+# 19. What I should remember
+
+```text
+Sass
+→ CSS Preprocessor
+→ Adds features like variables, nesting and mixins
+→ Compiles into CSS
+
+Tailwind CSS
+→ Utility-first CSS Framework
+→ Provides utility classes
+→ Helps build UI faster
+
+Browser
+→ Ultimately understands CSS
+```
+
+### Main difference
+
+> **Sass changes how we write and organize CSS, while Tailwind helps us build UI using utility classes.**
 
