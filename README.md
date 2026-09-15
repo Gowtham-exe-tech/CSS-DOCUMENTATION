@@ -1059,7 +1059,7 @@ clamp(minimum, preferred, maximum)
 
 * Not only for color, "reusable named value".
 
-* CSS custom properties are inherited by default.
+* CSS custom properties are inherited by default.f
 
 * Instead of writing the same color many times:
 
